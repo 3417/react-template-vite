@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound/NotFound';
 
 // 动态加载前端路由列表
 // const pages = import.meta.glob('../views/*/*.tsx');
+// const pages = import.meta.glob('@/views/*/*.tsx');
 // const dynamicRoutesVite = Object.entries(pages).map(([path, value]) => {
 //   const componentName = path.split('/').pop()?.replace('.tsx', '');
 //   const routePath = componentName === 'Home' ? '/' : `/${componentName.toLowerCase()}`
@@ -16,20 +17,34 @@ import NotFound from '../views/NotFound/NotFound';
 //     element: <Component />
 //   }
 // })
-
 const DefineRoutes = memo(() => {
-  const [routesData,setRoutesData] = useState([
+  const [routesData, setRoutesData] = useState([
     {
       path: '/table',
-      name:'table',
-      component: '../views/Table/Table'  //TODO:无法使用别名
+      name: 'table',
+      component: '@/views/Table/Table'
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: '@/views/Setting/Setting'
     }
   ]);
-  // 根据后端动态返回的菜单数据，动态生成路由
-  const dynamicRoutes = routesData.map((route) => {
-    const Component = lazy(() => import(/* @vite-ignore */route.component));
+  // 根据后端动态返回的菜单数据，动态生成路由 (该方式只能component只能使用../的方式引用)
+  // const dynamicRoutes = routesData.map((route) => {
+  //   const Component = lazy(() => import(/* @vite-ignore */route.component));
+  //   return {
+  //     path: route.path,
+  //     element: <Component />
+  //   }
+  // })
+  const pages = import.meta.glob('@/views/*/*.tsx');
+  const dynamicRoutes = Object.entries(pages).map(([path, value]) => {
+    const componentName = path.split('/').pop()?.replace('.tsx', '');
+    const routePath = componentName === 'Home' ? '/' : `/${componentName.toLowerCase()}`
+    const Component = lazy(() => value());
     return {
-      path: route.path,
+      path: routePath,
       element: <Component />
     }
   })

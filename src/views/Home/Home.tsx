@@ -5,18 +5,12 @@ import viteLogo from '/vite.svg'
 import { Button, Modal } from '@douyinfe/semi-ui';
 import useToggle from '../../hooks/useToggle';
 import { getHomeData } from '../../api/index';
-import  fullLoading from '../../components/Loading/fullLoading';
+import  fullLoading from '@/components/Loading/fullLoading';
 import './Home.less'
 
 const Home = () => {
   const [count, setCount] = useState(0);
   const [toggleState, toggleAction] = useToggle(false);
-  useEffect(() => {
-    fullLoading.show();
-    setTimeout(() => {
-      fullLoading.hide();
-    }, 3000);
-  }, [])
   const onHandleClick = (msg) => {
     alert(msg)
   }

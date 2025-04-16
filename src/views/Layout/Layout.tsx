@@ -1,17 +1,17 @@
 import React, { useEffect, useState,Suspense } from 'react';
-import { Layout, Nav, Button, Breadcrumb, Skeleton, Avatar } from '@douyinfe/semi-ui';
+import { Layout, Nav, Button, Breadcrumb, Skeleton, Avatar,Spin } from '@douyinfe/semi-ui';
 import { IconSemiLogo, IconBell, IconHelpCircle, IconBytedanceLogo, IconHome, IconHistogram, IconLive, IconSetting } from '@douyinfe/semi-icons';
 import { Outlet,Link,useNavigate,useLocation } from 'react-router-dom'
 const Home = () => {
     const { Header, Footer, Sider, Content } = Layout;
-    const [selectedKeys,setSelectedKeys] = useState();
+    const [selectedKeys,setSelectedKeys] = useState([]);
     const navigate = useNavigate();
     const router = useLocation()
     const handleMenuClick = ({itemKey, event, isOpen}) =>{
         navigate(`${itemKey}`);
     }
     const handleSelect = (selected) =>{
-        setSelectedKeys(...selected.selectedKeys)
+        setSelectedKeys([...selected.selectedKeys])
     }
     useEffect(()=>{
         setSelectedKeys([router.pathname])
@@ -59,7 +59,7 @@ const Home = () => {
                             { itemKey: '/home', text: '首页', icon: <IconHome size="large" /> },
                             { itemKey: '/workbench', text: '基础数据', icon: <IconHistogram size="large" /> },
                             { itemKey: '/table', text: 'table数据', icon: <IconLive size="large" /> },
-                            { itemKey: '/Setting', text: '设置', icon: <IconSetting size="large" /> },
+                            { itemKey: '/setting', text: '设置', icon: <IconSetting size="large" /> },
                         ]}
                         onClick={handleMenuClick}
                         onSelect={handleSelect}
@@ -89,7 +89,7 @@ const Home = () => {
                         }}
                     >
 
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={<div><Spin /></div>}>
                             <Outlet />
                         </Suspense>
                     </div>
