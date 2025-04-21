@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { routes } from '@/router';
 
-
+const isLogin = false;
 
 const getCurrentRouterMap = (routes: any[], path: string) => {
     for (let router of routes) {
@@ -19,9 +20,10 @@ export const RouterBeforeEach = ({ children }: any) => {
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
-        let router = getCurrentRouterMap(routes, location.pathname);
-        if (!isLogin && router.auth) {
-            navigate('/login')
+        let currentRoute = getCurrentRouterMap(routes, location.pathname);
+        // if (currentRoute?.auth && !isLogin) {
+        if (!isLogin) {
+            navigate('/login');
         }
     }, [location.pathname])
 
