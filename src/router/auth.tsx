@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routes } from '@/router';
 
-const isLogin = false;
+// 判断是否登录
+const isLogin = () => {
+    // 这里可以添加实际的登录验证逻辑
+    return true; // 假设用户已登录
+}
 
 const getCurrentRouterMap = (routes: any[], path: string) => {
     for (let router of routes) {
@@ -22,7 +26,7 @@ export const RouterBeforeEach = ({ children }: any) => {
     useEffect(() => {
         let currentRoute = getCurrentRouterMap(routes, location.pathname);
         // if (currentRoute?.auth && !isLogin) {
-        if (!isLogin) {
+        if (!isLogin()) {
             navigate('/login');
         }
     }, [location.pathname])

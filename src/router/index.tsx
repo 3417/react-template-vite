@@ -6,7 +6,7 @@ import Workbench from '../views/workbench/workbench';
 import NotFound from '../views/NotFound/NotFound';
 import Login from '@/views/Login/Login';
 
-// 动态加载前端路由列表
+// 动态加载前端路由列表(该方法不失为一种解决方案)
 // const pages = import.meta.glob('../views/*/*.tsx');
 // const pages = import.meta.glob('@/views/*/*.tsx');
 // const dynamicRoutesVite = Object.entries(pages).map(([path, value]) => {
@@ -19,51 +19,58 @@ import Login from '@/views/Login/Login';
 //   }
 // })】
 
-const routerConfig = () => {
+
+// 批量生成路由
+const dynamicRoutes = () => {
   const pages = import.meta.glob('@/views/*/*.tsx');
-  const whiteList = ['Login'];
+  const whiteList = ['Login', 'Workbench', 'Home', 'Layout', 'NotFound'];
   const dynamicRoutes = Object.entries(pages).map(([path, value]) => {
     const componentName = path.split('/').pop()?.replace('.tsx', '');
     if (whiteList.includes(componentName)) return null;
-    const routePath = componentName === 'Home' ? '/' : `/${componentName.toLowerCase()}`
+    const routePath = componentName === 'Home' ? '/' : `${componentName.toLowerCase()}`;
     const Component = lazy(() => value());
     return {
       path: routePath,
       element: <Component />
     }
   }).filter(Boolean) as Array<{ path: string; element: JSX.Element }>;
-  const routes = [
-    {
-      path: '/',
-      element: <Layout />,
-      children: [
-        {
-          path: 'home',
-          index: true,
-          element: <Home />
-        },
-        {
-          path: 'workbench',
-          // element:<Suspense fallback={<div>Loading...</div>}><Workbench /> </Suspense>
-          element: <Workbench />
-        },
-        // ...dynamicRoutesVite,
-        ...dynamicRoutes
-      ]
-    },
-    {
-      path: '/login',
-      element: <Login />
-    },
-    {
-      path: '*',
-      element: <NotFound />
-    }
-  ];
 
-  return routes;
+  return dynamicRoutes;
 }
-const DefineRoutes = memo(() => {
+
+// 总路由
+const routes = [
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        path: 'home',
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'workbench',
+        // element:<Suspense fallback={<div>Loading...</div>}><Workbench /> </Suspense>
+        element: <Workbench />
+      },
+      // ...dynamicRoutesVite,
+      ...dynamicRoutes()
+    ]
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '*',
+    element: <NotFound />
+  }
+];
+
+
+// TODO:该方法可舍去
+// const DefineRoutes = () => {
   // const [routesData, setRoutesData] = useState([
   //   {
   //     path: '/table',
@@ -84,12 +91,12 @@ const DefineRoutes = memo(() => {
   //     element: <Component />
   //   }
   // })
-  const routes = useRoutes(routerConfig());
-  return routes;
+// }
+
+
+const DefineRoutes = memo(() => {
+  return useRoutes(routes);
 });
-
-
-const routes = routerConfig();
 
 export {
   routes

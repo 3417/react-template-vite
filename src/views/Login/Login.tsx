@@ -6,6 +6,10 @@ const Login = () => {
     const emptyStyle = {
         marginRight:120,
     }
+
+    const handleSubmit = async (values)=>{
+        console.log('submit', values);
+    }
     return (
         <>
             <div className="common_flex login_container">
