@@ -6,6 +6,7 @@ import { Button, Modal } from '@douyinfe/semi-ui';
 import useToggle from '../../hooks/useToggle';
 import { getHomeData } from '../../api/index';
 import  fullLoading from '@/components/Loading/fullLoading';
+import OButton from '@/views/Button/Button';
 import './Home.less'
 
 const Home = () => {
@@ -64,6 +65,7 @@ const Home = () => {
       <div dangerouslySetInnerHTML={{ __html: '<p>获取数据</p>' }}></div>
 
       <Button onClick={showDialog}>打开弹窗</Button>
+      <OButton />
       <Modal
         title="基本对话框"
         visible={visible}

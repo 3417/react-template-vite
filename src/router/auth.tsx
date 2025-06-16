@@ -5,7 +5,7 @@ import { routes } from '@/router';
 // 判断是否登录
 const isLogin = () => {
     // 这里可以添加实际的登录验证逻辑
-    return true; // 假设用户已登录
+    return false; // 假设用户已登录
 }
 
 const getCurrentRouterMap = (routes: any[], path: string) => {
