@@ -1,14 +1,19 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Button, Empty } from "@douyinfe/semi-ui";
 import { IllustrationIdle, IllustrationIdleDark } from '@douyinfe/semi-illustrations';
+import { useNavigate } from "react-router-dom";
 import './index.less';
 const Login = () => {
     const emptyStyle = {
         marginRight: 120,
     }
 
+    const navigate = useNavigate();
     const handleSubmit = async (values) => {
-        console.log('submit', values);
+        sessionStorage.setItem('user', JSON.stringify(values));
+        // 模拟登录成功
+        navigate('/home');
+
     }
     const titleCard = useRef(null);
     const onCardMouseMove = (e) => {
@@ -27,6 +32,12 @@ const Login = () => {
         const card = titleCard.current;
         card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)'
     }
+    useEffect(() => {
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            navigate('/home');
+        }
+    }, [])
     return (
         <>
             <div className="login_container">

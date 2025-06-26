@@ -84,7 +84,6 @@ const Home = () => {
                         style={{
                             borderRadius: '10px',
                             border: '1px solid var(--semi-color-border)',
-                            height: '376px',
                             padding: '32px',
                         }}
                     >
